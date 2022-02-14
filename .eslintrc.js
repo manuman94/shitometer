@@ -10,5 +10,12 @@ module.exports = {
     sourceType: 'module'
   },
   plugins: ['@typescript-eslint'],
-  rules: {}
+  rules: {
+    'new-cap': [
+      'error',
+      {
+        capIsNewExceptions: ['Entity', 'PrimaryGeneratedColumn', 'Column']
+      }
+    ]
+  }
 };

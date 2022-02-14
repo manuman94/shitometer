@@ -1,13 +1,19 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, Column} from 'typeorm';
 
 @Entity()
+/**
+ * Shit register entity
+ */
 export class ShitRegister {
   @PrimaryGeneratedColumn()
-  id!: number;
+    id!: number;
 
   @Column('text')
-  user!: string;
+    user!: string;
+
+  @Column('text')
+    chat!: string;
 
   @Column('datetime')
-  createdAt!: Date;
+    createdAt!: Date;
 }

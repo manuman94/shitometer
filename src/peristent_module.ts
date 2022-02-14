@@ -1,7 +1,11 @@
-import { Connection, createConnection } from 'typeorm';
-import { ShitRegister } from './entities/ShitRegister';
+import {Connection, createConnection} from 'typeorm';
+import {ShitRegister} from './entities/ShitRegister';
 
-export async function getConnection(): Promise<Connection> {
+/**
+ * Get persistence layer connection by TypeORM
+ * @return {Connection} Typeorm.Connection
+ */
+export default async function getConnection(): Promise<Connection> {
   if (
     typeof process.env.MYSQL_HOST === 'undefined' ||
     typeof process.env.MYSQL_PORT === 'undefined' ||
@@ -9,7 +13,9 @@ export async function getConnection(): Promise<Connection> {
     typeof process.env.MYSQL_PASSWORD === 'undefined' ||
     typeof process.env.MYSQL_USERNAME === 'undefined'
   ) {
-    throw new Error('MYSQL_HOST and MYSQL_PORT environment variables are mandatory');
+    const err = `MYSQL_HOST, MYSQL_PORT, MYSQL_DATABASE, 
+      MYSQL_PASSWORD and MYSQL_USERNAME environment variables are mandatory`;
+    throw new Error(err);
   }
   return await createConnection({
     type: 'mysql',
