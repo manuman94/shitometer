@@ -10,5 +10,6 @@ RUN npm install --production && npm cache clean --force
 COPY ./ /usr/src/app
 ENV NODE_ENV production
 
+RUN [ "npm", "i", "-g", "babel" ]
 RUN [ "npm", "run", "build" ]
 CMD [ "npm", "start" ]
