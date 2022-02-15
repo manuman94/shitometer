@@ -11,4 +11,3 @@ COPY ./ /usr/src/app
 ENV NODE_ENV production
 
 RUN [ "npm", "run", "build" ]
-ENTRYPOINT [ "npm", "start" ]
