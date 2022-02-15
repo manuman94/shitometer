@@ -12,6 +12,9 @@ export class ShitRegister {
     user!: string;
 
   @Column('text')
+    username!: string;
+
+  @Column('text')
     chat!: string;
 
   @Column('datetime')

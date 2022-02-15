@@ -88,6 +88,7 @@ export class ShitometerBot {
     try {
       const ShitRegisterRepository = this.getRepository();
       if (typeof ctx.from === 'undefined' ||
+          typeof ctx.from.username === 'undefined' ||
           typeof ctx.from.id === 'undefined') {
         throw new Error('Sender ID is undefined');
       }
@@ -97,6 +98,7 @@ export class ShitometerBot {
       }
       await ShitRegisterRepository.save({
         user: ctx.from.id + '',
+        username: ctx.from.username + '',
         chat: ctx.chat.id + '',
         createdAt: new Date(),
       });
