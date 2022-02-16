@@ -2,8 +2,8 @@ import { Context, Markup, Telegraf } from 'telegraf';
 import { User } from 'telegraf/typings/core/types/typegram';
 import { Connection, Repository } from 'typeorm';
 import { ShitRegister } from './entities/ShitRegister';
+import { DBHelper } from './helpers/DBHelper';
 import { TimeFilter } from './models/TimeFilter';
-import { getTopShitters } from './peristent_module';
 
 /**
  * A telegram bot to share shit statistics between friends.
@@ -120,7 +120,11 @@ export class ShitometerBot {
            typeof ctx.chat === 'undefined' ) {
         throw new Error('Chat ID Not found');
       }
-      const shitters = await getTopShitters(timeFilter, ctx.chat.id + '');
+      const shitters = await DBHelper.getTopShitters(
+          this.connection,
+          timeFilter,
+          ctx.chat.id + '',
+      );
       console.log(shitters);
       ctx.reply('Showing top command for ' + TimeFilter[timeFilter]);
     } catch (err) {
