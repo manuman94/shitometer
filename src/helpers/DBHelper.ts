@@ -16,7 +16,7 @@ export class DBHelper {
       connection: Connection,
       timeFilter: TimeFilter,
       chat: string,
-  ) {
+  ): Promise<ShitRegister[]> {
     const queryBuilder =
         connection.getRepository(ShitRegister).createQueryBuilder();
     return await queryBuilder.addSelect('count(*)', 'count')
@@ -24,6 +24,8 @@ export class DBHelper {
         .andWhere(`createdAt between date_sub(now(), ` +
             `INTERVAL 1 ${TimeFilter[timeFilter]}) and now()`)
         .groupBy('user')
-        .orderBy('count', 'DESC');
+        .orderBy('count', 'DESC')
+        .limit(5)
+        .getMany();
   }
 }

@@ -125,8 +125,8 @@ export class ShitometerBot {
           timeFilter,
           ctx.chat.id + '',
       );
-      console.log(shitters);
-      ctx.reply('Showing top command for ' + TimeFilter[timeFilter]);
+
+      ctx.replyWithMarkdownV2(this.getMarkdownTop(shitters, timeFilter));
     } catch (err) {
       console.log(err);
     }
@@ -181,5 +181,24 @@ export class ShitometerBot {
       }
     }
     return username + '';
+  }
+
+  /**
+   * Get a beautiful markdown of the TOP shitters
+   * @param {ShitRegister[]} shitRegisters Top shitter registers
+   * @param {TimeFilter} timeFilter Time filter used for the TOP
+   * @return {string} A beautiful markdown of the TOP shitters
+   */
+  private getMarkdownTop(
+      shitRegisters: ShitRegister[],
+      timeFilter: TimeFilter,
+  ): string {
+    return `🏆 TOP OF THE ${TimeFilter[timeFilter]} 🏆 <br>
+    - 1️⃣ Manuman
+    - 2️⃣ Virginia
+    - 3️⃣ San Diego Menéndez
+    - 4️⃣ Lupita
+    - 5️⃣ Sandocán
+    `;
   }
 }
