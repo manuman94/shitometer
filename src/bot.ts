@@ -194,11 +194,11 @@ export class ShitometerBot {
       timeFilter: TimeFilter,
   ): string {
     return `🏆 TOP OF THE ${TimeFilter[timeFilter]} 🏆
-    - 1️⃣ Manuman
-    - 2️⃣ Virginia
-    - 3️⃣ San Diego Menéndez
-    - 4️⃣ Lupita
-    - 5️⃣ Sandocán
+    1️⃣ Manuman
+    2️⃣ Virginia
+    3️⃣ San Diego Menéndez
+    4️⃣ Lupita
+    5️⃣ Sandocán
     `;
   }
 }
