@@ -198,9 +198,21 @@ export class ShitometerBot {
     for ( const shitRegister of shitRegisters ) {
       i++;
       output += `${this.numberEmojis[i]}` +
-        `${shitRegister.username}: ${shitRegister.count} \n`;
+        ` ${shitRegister.username}: ${shitRegister.count} \n`;
     }
-    return output;
+    return this.sanitizeMarkdownOutput(output);
+  }
+
+  /**
+   * Sanitize markdown output to avoid message errors
+   * @param {string} output The output to sanitize
+   * @return {string} Sanitized output
+   */
+  private sanitizeMarkdownOutput(output: string): string {
+    return output.replace('_', '\\_')
+        .replace('*', '\\*')
+        .replace('[', '\\[')
+        .replace('`', '\\`');
   }
 
   private numberEmojis = ['0', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣'];
