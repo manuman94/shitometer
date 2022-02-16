@@ -3,6 +3,7 @@ import { User } from 'telegraf/typings/core/types/typegram';
 import { Connection, Repository } from 'typeorm';
 import { ShitRegister } from './entities/ShitRegister';
 import { TimeFilter } from './models/TimeFilter';
+import { getTopShitters } from './peristent_module';
 
 /**
  * A telegram bot to share shit statistics between friends.
@@ -45,6 +46,10 @@ export class ShitometerBot {
     });
 
     this.bot.action('DAILY_TOP', async (ctx) => {
+      await this.showTopCommand.call(self, ctx, TimeFilter.DAY);
+    });
+
+    this.bot.action('WEEKLY_TOP', async (ctx) => {
       await this.showTopCommand.call(self, ctx, TimeFilter.DAY);
     });
 
@@ -99,6 +104,7 @@ export class ShitometerBot {
         Markup.inlineKeyboard([
           Markup.button.callback('Daily top', 'DAILY_TOP'),
           Markup.button.callback('Weekly top', 'WEEKLY_TOP'),
+          Markup.button.callback('Monthly top', 'MONTHLY_TOP'),
           Markup.button.callback('Yearly top', 'YEARLY_TOP'),
         ]));
   }
@@ -109,7 +115,17 @@ export class ShitometerBot {
    * @param {TimeFilter} timeFilter Time filter
    */
   private async showTopCommand(ctx: Context, timeFilter: TimeFilter) {
-    ctx.reply('Showing top command for ' + timeFilter.toString());
+    try {
+      if ( typeof ctx.chat?.id === 'undefined' ||
+           typeof ctx.chat === 'undefined' ) {
+        throw new Error('Chat ID Not found');
+      }
+      const shitters = await getTopShitters(timeFilter, ctx.chat.id + '');
+      console.log(shitters);
+      ctx.reply('Showing top command for ' + TimeFilter[timeFilter]);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   /**

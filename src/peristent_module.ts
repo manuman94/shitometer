@@ -42,7 +42,7 @@ export async function getTopShitters(timeFilter: TimeFilter, chat: string) {
   return await queryBuilder.addSelect('count(*)', 'count')
       .where('chat = :chat', { chat: chat })
       .andWhere(`createdAt between date_sub(now(), ` +
-        `INTERVAL 1 ${timeFilter.toString()}) and now()`)
+        `INTERVAL 1 ${TimeFilter[timeFilter]}) and now()`)
       .groupBy('user')
       .orderBy('count', 'DESC');
 }
