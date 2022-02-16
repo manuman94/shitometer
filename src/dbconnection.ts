@@ -1,6 +1,5 @@
 import { Connection, createConnection } from 'typeorm';
 import { ShitRegister } from './entities/ShitRegister';
-import { TimeFilter } from './models/TimeFilter';
 
 /**
  * Get persistence layer connection by TypeORM
