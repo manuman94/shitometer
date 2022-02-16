@@ -20,6 +20,7 @@ export class DBHelper {
     const queryBuilder =
         connection.getRepository(ShitRegister).createQueryBuilder();
     return await queryBuilder.addSelect('count(*)', 'count')
+        .addSelect('username')
         .where('chat = :chat', { chat: chat })
         .andWhere(`createdAt between date_sub(now(), ` +
             `INTERVAL 1 ${TimeFilter[timeFilter]}) and now()`)
