@@ -193,7 +193,7 @@ export class ShitometerBot {
       shitRegisters: ShitRegister[],
       timeFilter: TimeFilter,
   ): string {
-    return `🏆 TOP OF THE ${TimeFilter[timeFilter]} 🏆 \<br\>
+    return `🏆 TOP OF THE ${TimeFilter[timeFilter]} 🏆
     - 1️⃣ Manuman
     - 2️⃣ Virginia
     - 3️⃣ San Diego Menéndez
