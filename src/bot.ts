@@ -50,7 +50,7 @@ export class ShitometerBot {
     });
 
     this.bot.action('WEEKLY_TOP', async (ctx) => {
-      await this.showTopCommand.call(self, ctx, TimeFilter.DAY);
+      await this.showTopCommand.call(self, ctx, TimeFilter.WEEK);
     });
 
     this.bot.action('MONTHLY_TOP', async (ctx) => {
@@ -190,15 +190,18 @@ export class ShitometerBot {
    * @return {string} A beautiful markdown of the TOP shitters
    */
   private getMarkdownTop(
-      shitRegisters: ShitRegister[],
+      shitRegisters: any[],
       timeFilter: TimeFilter,
   ): string {
-    return `🏆 TOP OF THE ${TimeFilter[timeFilter]} 🏆
-    1️⃣ Manuman
-    2️⃣ Virginia
-    3️⃣ San Diego Menéndez
-    4️⃣ Lupita
-    5️⃣ Sandocán
-    `;
+    let output = `🏆 TOP OF THE ${TimeFilter[timeFilter]} 🏆 \n`;
+    let i = 0;
+    for ( const shitRegister of shitRegisters ) {
+      i++;
+      output += `${this.numberEmojis[i]}` +
+        `${shitRegister.username}: ${shitRegister.count}`;
+    }
+    return output;
   }
+
+  private numberEmojis = ['0', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣'];
 }

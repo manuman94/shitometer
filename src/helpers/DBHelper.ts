@@ -16,7 +16,7 @@ export class DBHelper {
       connection: Connection,
       timeFilter: TimeFilter,
       chat: string,
-  ): Promise<ShitRegister[]> {
+  ): Promise<any[]> {
     const queryBuilder =
         connection.getRepository(ShitRegister).createQueryBuilder();
     return await queryBuilder.addSelect('count(*)', 'count')
@@ -26,6 +26,6 @@ export class DBHelper {
         .groupBy('user')
         .orderBy('count', 'DESC')
         .limit(5)
-        .getMany();
+        .getRawMany();
   }
 }
