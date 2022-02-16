@@ -1,6 +1,8 @@
-import {Context, Telegraf} from 'telegraf';
-import {Connection, Repository} from 'typeorm';
-import {ShitRegister} from './entities/ShitRegister';
+import { Context, Markup, Telegraf } from 'telegraf';
+import { User } from 'telegraf/typings/core/types/typegram';
+import { Connection, Repository } from 'typeorm';
+import { ShitRegister } from './entities/ShitRegister';
+import { TimeFilter } from './models/TimeFilter';
 
 /**
  * A telegram bot to share shit statistics between friends.
@@ -36,6 +38,22 @@ export class ShitometerBot {
 
     this.bot.command(['me', 'yo'], async (ctx) => {
       await this.meCommand.call(self, ctx);
+    });
+
+    this.bot.command(['top'], async (ctx) => {
+      await this.topCommand.call(self, ctx);
+    });
+
+    this.bot.action('DAILY_TOP', async (ctx) => {
+      await this.showTopCommand.call(self, ctx, TimeFilter.DAY);
+    });
+
+    this.bot.action('MONTHLY_TOP', async (ctx) => {
+      await this.showTopCommand.call(self, ctx, TimeFilter.MONTH);
+    });
+
+    this.bot.action('YEARLY_TOP', async (ctx) => {
+      await this.showTopCommand.call(self, ctx, TimeFilter.YEAR);
     });
   }
 
@@ -73,6 +91,28 @@ export class ShitometerBot {
   }
 
   /**
+   * The top command action
+   * @param {Context} ctx Telegram message context
+   */
+  private async topCommand(ctx: Context) {
+    ctx.replyWithMarkdownV2('Which TOP do you want to see?',
+        Markup.inlineKeyboard([
+          Markup.button.callback('Daily top', 'DAILY_TOP'),
+          Markup.button.callback('Weekly top', 'WEEKLY_TOP'),
+          Markup.button.callback('Yearly top', 'YEARLY_TOP'),
+        ]));
+  }
+
+  /**
+   * The top command action
+   * @param {Context} ctx Telegram message context
+   * @param {TimeFilter} timeFilter Time filter
+   */
+  private async showTopCommand(ctx: Context, timeFilter: TimeFilter) {
+    ctx.reply('Showing top command for ' + timeFilter.toString());
+  }
+
+  /**
    * Get the TypeORM repository to use persistence layer
    * @return {Repository<ShitRegister>} The ShitRegister repository
    */
@@ -91,25 +131,35 @@ export class ShitometerBot {
           typeof ctx.from.id === 'undefined') {
         throw new Error('Sender ID is undefined');
       }
-      let username = ctx.from.username;
-      if ( typeof ctx.from.username === 'undefined' ) {
-        username = ctx.from.first_name;
-        if ( typeof ctx.from.last_name !== 'undefined' ) {
-          username += ' ' + ctx.from.last_name;
-        }
-      }
       if (typeof ctx.chat === 'undefined' ||
           typeof ctx.chat.id === 'undefined') {
         throw new Error('Chat ID is undefined');
       }
       await ShitRegisterRepository.save({
         user: ctx.from.id + '',
-        username: username + '',
+        username: this.getUserName(ctx.from),
         chat: ctx.chat.id + '',
         createdAt: new Date(),
       });
     } catch (err) {
       throw new Error(err + '');
     }
+  }
+
+  /**
+   * Get username from user.
+   * If username is not present first_name and last_name will be used
+   * @param {User} user User to get the name from
+   * @return {string} The proper username value
+   */
+  private getUserName(user: User): string {
+    let username = user.username;
+    if ( typeof user.username === 'undefined' ) {
+      username = user.first_name;
+      if ( typeof user.last_name !== 'undefined' ) {
+        username += ' ' + user.last_name;
+      }
+    }
+    return username + '';
   }
 }

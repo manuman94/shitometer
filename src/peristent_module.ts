@@ -1,5 +1,6 @@
-import {Connection, createConnection} from 'typeorm';
-import {ShitRegister} from './entities/ShitRegister';
+import { Connection, createConnection } from 'typeorm';
+import { ShitRegister } from './entities/ShitRegister';
+import { TimeFilter } from './models/TimeFilter';
 
 /**
  * Get persistence layer connection by TypeORM
@@ -27,4 +28,21 @@ export default async function getConnection(): Promise<Connection> {
     entities: [ShitRegister],
     synchronize: true,
   });
+}
+
+/**
+ * Get the top shitters of the specified date interval and chat
+ * @param {TimeFilter} timeFilter Time filter
+ * @param {string} chat Chat to get the top shitters from
+ */
+export async function getTopShitters(timeFilter: TimeFilter, chat: string) {
+  const connection: Connection = await getConnection();
+  const queryBuilder =
+    connection.getRepository(ShitRegister).createQueryBuilder();
+  return await queryBuilder.addSelect('count(*)', 'count')
+      .where('chat = :chat', { chat: chat })
+      .andWhere(`createdAt between date_sub(now(), ` +
+        `INTERVAL 1 ${timeFilter.toString()}) and now()`)
+      .groupBy('user')
+      .orderBy('count', 'DESC');
 }
