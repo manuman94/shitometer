@@ -6,7 +6,11 @@ import getConnection from './peristent_module';
 const start = async () => {
   configEnvVars();
   const connection: Connection = await getConnection();
-  new ShitometerBot(connection);
+  try {
+    new ShitometerBot(connection);
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 start();
