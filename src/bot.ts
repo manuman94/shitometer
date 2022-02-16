@@ -198,7 +198,8 @@ export class ShitometerBot {
     for ( const shitRegister of shitRegisters ) {
       i++;
       output += `${this.numberEmojis[i]}` +
-        ` ${shitRegister.username}: ${shitRegister.count} \n`;
+        ` ${this.sanitizeMarkdownOutput(shitRegister.username)}:` +
+        ` ${shitRegister.count} \n`;
     }
     return this.sanitizeMarkdownOutput(output);
   }
