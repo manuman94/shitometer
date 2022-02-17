@@ -126,7 +126,7 @@ export class ShitometerBot {
           ctx.chat.id + '',
       );
 
-      ctx.replyWithMarkdownV2(this.getMarkdownTop(shitters, timeFilter));
+      ctx.reply(this.getMarkdownTop(shitters, timeFilter));
     } catch (err) {
       console.log(err);
     }
@@ -198,10 +198,10 @@ export class ShitometerBot {
     for ( const shitRegister of shitRegisters ) {
       i++;
       output += `${this.numberEmojis[i]}` +
-        ` ${this.sanitizeMarkdownOutput(shitRegister.username)}:` +
+        ` ${shitRegister.username}:` +
         ` ${shitRegister.count} \n`;
     }
-    return this.sanitizeMarkdownOutput(output);
+    return output;
   }
 
   /**
