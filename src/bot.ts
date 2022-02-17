@@ -102,10 +102,10 @@ export class ShitometerBot {
   private async topCommand(ctx: Context) {
     ctx.replyWithMarkdownV2('Which TOP do you want to see?',
         Markup.inlineKeyboard([
-          Markup.button.callback('Daily top', 'DAILY_TOP'),
-          Markup.button.callback('Weekly top', 'WEEKLY_TOP'),
-          Markup.button.callback('Monthly top', 'MONTHLY_TOP'),
-          Markup.button.callback('Yearly top', 'YEARLY_TOP'),
+          Markup.button.callback('Last 24h top', 'DAILY_TOP'),
+          Markup.button.callback('Last 7 days top', 'WEEKLY_TOP'),
+          Markup.button.callback('Last month top', 'MONTHLY_TOP'),
+          Markup.button.callback('Last year top', 'YEARLY_TOP'),
         ]));
   }
 
